@@ -1,13 +1,12 @@
 import React from 'react';
-import CustomerOrderHomePageContainer from '../Components/CustomerOrder/View/HomePage/CustomerOrderHomePageContainer'
+import SearchOrderContainer from '../Components/CustomerOrder/View/HomePage/SearchOrderContainer';
 import PageContainer from '../Layout/PageContainer';
 
 export default function HomePage() {
 
     return (
         <PageContainer >
-            <CustomerOrderHomePageContainer />
-            Home Page
+            <SearchOrderContainer />
         </PageContainer>
     )
 }

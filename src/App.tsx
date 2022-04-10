@@ -8,6 +8,7 @@ import NotFound from './Pages/NotFount.Page'
 import NavigationBar from './Layout/NavigationBar';
 import { Typography } from '@mui/material';
 import {Route, Routes} from 'react-router-dom';
+import Order from './Pages/Order.Page';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Routes>
             <Route path='/' element={<HomePage />}/>
             <Route path='/adminpanel' element={<AdminPanel />} />
+            <Route path='/order/:id' element={<Order />}/>
             <Route path='*' element={<NotFound />}/>
           </Routes>
         </React.Suspense>
