@@ -1,5 +1,6 @@
 import { Box, Container, Divider } from '@mui/material';
 import React from 'react';
+import AllOrders from '../Components/CustomerOrder/View/AdminPanel/AllOrders';
 import CreateNewOrder from '../Components/CustomerOrder/View/AdminPanel/CreateNewOrder';
 import PageContainer from '../Layout/PageContainer';
 
@@ -13,6 +14,8 @@ export default function AdminPanel(){
                 </Box>
                 <Divider />
                 <CreateNewOrder />
+                <Divider />
+                <AllOrders />
                 <Divider />
             </Container>
         </PageContainer>
