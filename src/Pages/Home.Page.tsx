@@ -7,9 +7,6 @@ export default function HomePage() {
     return (
         <PageContainer >
             <SearchOrderContainer />
-            <div>
-                TEST
-            </div>
         </PageContainer>
     )
 }
