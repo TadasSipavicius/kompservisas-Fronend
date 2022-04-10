@@ -17,7 +17,7 @@ export default function Order(){
 
     const [order, setOrder] = useState<IOrder>()
     useEffect(() => {
-        allOrders.map(item => {
+        allOrders.forEach(item => {
             if(item.name === params.id){
                 setOrder(item)
             }
@@ -47,7 +47,7 @@ export default function Order(){
                     <Divider />
                 </Stack>
             </Stack>
-            
+            <Typography style={{borderBottom: "1px solid black", marginTop: 20}}>Užsakymo istorija:</Typography>
         </PageContainer>
     )
 }
