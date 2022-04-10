@@ -9,6 +9,7 @@ import NavigationBar from './Layout/NavigationBar';
 import { Typography } from '@mui/material';
 import {Route, Routes} from 'react-router-dom';
 import Order from './Pages/Order.Page';
+import CreateNewOrder from './Pages/CreateNewOrder.Page';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path='/' element={<HomePage />}/>
             <Route path='/adminpanel' element={<AdminPanel />} />
             <Route path='/order/:id' element={<Order />}/>
+            <Route path='/createneworder' element={<CreateNewOrder />} />
             <Route path='*' element={<NotFound />}/>
           </Routes>
         </React.Suspense>
