@@ -2,7 +2,7 @@ import { Button, Container, Input, InputAdornment, InputLabel } from '@mui/mater
 import React, { useState } from 'react';
 import BorderColorIcon from '@material-ui/icons/BorderColor'
 import { useNavigate } from 'react-router-dom';
-
+import {allOrders} from '../../../../data/orders'
 
 export default function SearchOrderContainer(){
     const [searchInputText, setSearchInputText] = useState("");
@@ -16,10 +16,18 @@ export default function SearchOrderContainer(){
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchInputText(e.target.value)
     } 
-
+    const isExist = () => {
+        var filterByName = allOrders.filter(item => searchInputText === item.name)
+        if(filterByName.length === 0){
+            return false;
+        }
+        return true;
+    }
     const onSearchClick = () => {
         if(searchInputText.length !== 6){
             setInputValidation({isValide: false, text: "Turi būti 6 simboliai"})
+        } else if(isExist() === false){
+            setInputValidation({isValide: false, text: "Nėra tokio užsakymo"})
         } else {
             navigateToOrderPage()
         }
