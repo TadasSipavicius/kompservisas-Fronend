@@ -6,6 +6,7 @@ export default function CreateNewOrder(){
     return(
         <PageContainer>
             CREATE NEW ORDER PAGE
+            
         </PageContainer>
     )
 }
