@@ -4,7 +4,6 @@ import PageContainer from '../Layout/PageContainer';
 import { allOrders } from '../data/orders'
 import { Divider, Stack, Typography, Button, TextField, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import OrderImage from '../Images/OrderImage.png';
-import { AnyARecord } from 'dns';
 
 interface IHistory {
     time: string;
@@ -21,11 +20,9 @@ interface IOrder {
 }
 
 export default function Order() {
+    
     const params = useParams();
-
     const [isAddHistoryFormIsOpen, setIsAddHistoryFormIsOpen] = useState({ status: false, commentText: "", statusText: "" });
-    const [statusInputText, setStatusInputText] = useState('');
-    const [commentInputText, setCommentInputText] = useState('')
     const [order, setOrder] = useState<IOrder>()
 
     useEffect(() => {
