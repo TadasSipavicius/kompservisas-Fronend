@@ -10,11 +10,13 @@ import { Typography } from '@mui/material';
 import {Route, Routes} from 'react-router-dom';
 import Order from './Pages/Order.Page';
 import CreateNewOrder from './Pages/CreateNewOrder.Page';
+import ScrollToTop from './Layout/ScrollToTop';
 
 function App() {
   return (
     <Stack>
       <NavigationBar />
+      <ScrollToTop />
       <React.Suspense fallback={<Typography style={{textAlign: "center"}}>Loading...</Typography>}>
           <Routes>
             <Route path='/' element={<HomePage />}/>
