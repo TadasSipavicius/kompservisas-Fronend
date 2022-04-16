@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import PageContainer from '../Layout/PageContainer';
 import { allOrders } from '../data/orders'
-import { Divider, Stack, Typography, Button, TextField, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import { Divider, Stack, Typography, Button, TextField, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import OrderImage from '../Images/OrderImage.png';
 
 interface IHistory {
@@ -20,9 +20,10 @@ interface IOrder {
 }
 
 export default function Order() {
-    
+
     const params = useParams();
     const [isAddHistoryFormIsOpen, setIsAddHistoryFormIsOpen] = useState({ status: false, commentText: "", statusText: "" });
+    const [deleteDialog, setDeleteDialog] = useState(false)
     const [order, setOrder] = useState<IOrder>()
 
     useEffect(() => {
@@ -47,6 +48,14 @@ export default function Order() {
 
     const onCommentChange = (e: any) => {
         setIsAddHistoryFormIsOpen({ ...isAddHistoryFormIsOpen, commentText: e.target.value });
+    }
+
+    const onDeleteButtonClick = () => {
+        setDeleteDialog(!deleteDialog);
+    }
+
+    const handleDialogClose = () => {
+        setDeleteDialog(false);
     }
 
     const submitHistoryForm = () => {
@@ -118,9 +127,23 @@ export default function Order() {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <Button style={{ marginTop: 20, float: "right" }} variant='contained' color='error' onClick={onDisplayHistoryForm}>
+            <Button style={{ marginTop: 20, float: "right" }} variant='contained' color='error' onClick={onDeleteButtonClick}>
                 Ištrinti užsakymą
             </Button>
+            {deleteDialog ? (
+                <Dialog
+                    open={deleteDialog}
+                    onClose={handleDialogClose}
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        Ar tikrai norite ištrinti užsakymą: {order?.name} ?
+                    </DialogTitle>
+                    <DialogActions>
+                        <Button onClick={handleDialogClose} color='error' variant='outlined'>Ne</Button>
+                        <Button onClick={handleDialogClose} autoFocus color='success' variant='contained'>Taip</Button>
+                    </DialogActions>
+                </Dialog>
+            ) : null}
         </PageContainer>
 
     )
