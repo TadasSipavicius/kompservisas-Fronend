@@ -3,13 +3,14 @@ import { useParams } from 'react-router-dom';
 import PageContainer from '../Layout/PageContainer';
 import { Divider, Stack, Typography, Button, TextField, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Dialog, DialogTitle, DialogActions } from '@mui/material';
 import OrderImage from '../Images/OrderImage.png';
-import { getOneOrderById } from '../Components/CustomerOrder/Controller/CustomerOrderController';
+import { getOneOrderById, insertHistoryInOrder } from '../Components/CustomerOrder/Controller/CustomerOrderController';
 import { IOrder } from '../Components/CustomerOrder/Model/AllOrders';
 
 export default function Order() {
 
     const params = useParams();
-    const [isAddHistoryFormIsOpen, setIsAddHistoryFormIsOpen] = useState({ status: false, commentText: "", statusText: "" });
+    const [isAddHistoryFormIsOpen, setIsAddHistoryFormIsOpen] = useState({ status: false, commentText: "", statusText: "", price: "" });
+    const [afterAPIChanged, setAfterAPIChanged] = useState(false);
     const [deleteDialog, setDeleteDialog] = useState(false)
     const [order, setOrder] = useState<IOrder>({address: "", dateTime: "", email: "", description: "", firstName: "", id: 0, name: "", orderHistories: [], phone: "", price: 0, status: "", workerId: 0, lastName: ""})
 
@@ -19,15 +20,15 @@ export default function Order() {
             setOrder(theOrder);
         }
         getOrder();
-    }, [params.id])
+    }, [params.id, afterAPIChanged])
 
 
     const onDisplayHistoryForm = () => {
-        setIsAddHistoryFormIsOpen({ status: !isAddHistoryFormIsOpen.status, statusText: "", commentText: "" });
+        setIsAddHistoryFormIsOpen({ status: !isAddHistoryFormIsOpen.status, statusText: "", commentText: "", price: "" });
     }
 
     const onDisplayConfirmedHistoryForm = () => {
-        setIsAddHistoryFormIsOpen({ status: !isAddHistoryFormIsOpen.status, statusText: "Patvirtintas", commentText: "" });
+        setIsAddHistoryFormIsOpen({ status: !isAddHistoryFormIsOpen.status, statusText: "Patvirtintas", commentText: "", price: "" });
     }
 
     const onStatusChange = (e: any) => {
@@ -38,6 +39,10 @@ export default function Order() {
         setIsAddHistoryFormIsOpen({ ...isAddHistoryFormIsOpen, commentText: e.target.value });
     }
 
+    const onPriceChange = (e: any) =>{
+        setIsAddHistoryFormIsOpen({ ...isAddHistoryFormIsOpen, price: e.target.value });
+    }
+
     const onDeleteButtonClick = () => {
         setDeleteDialog(!deleteDialog);
     }
@@ -46,16 +51,19 @@ export default function Order() {
         setDeleteDialog(false);
     }
 
-    const handleDateDisplay = (dateTime: string ) =>{
-
+    const handleDateDisplay = (dateTime: string) =>{
         return dateTime.slice(0, 10);
     }
 
-    const submitHistoryForm = () => {
-        console.log("Status: ", isAddHistoryFormIsOpen.statusText);
-        console.log("Comment: ", isAddHistoryFormIsOpen.commentText);
-        setIsAddHistoryFormIsOpen({ status: false, statusText: "", commentText: "   " })
+    const handleDateDisplayWithHours = (dateTime: string) =>{
+        return dateTime.slice(0, 10) + " " + dateTime.slice(11, 16);
     }
+    const submitHistoryForm = async () => {
+        await insertHistoryInOrder(order.name, order.id, isAddHistoryFormIsOpen.statusText, isAddHistoryFormIsOpen.commentText, isAddHistoryFormIsOpen.price);
+        setAfterAPIChanged(!afterAPIChanged);
+        setIsAddHistoryFormIsOpen({ status: false, statusText: "", commentText: " ", price: "" })
+    }
+
     return (
         <PageContainer>
             <Typography style={{ borderBottom: "1px solid black", marginTop: 20 }}>Užsakymas: {order?.name}</Typography>
@@ -118,6 +126,12 @@ export default function Order() {
                     }
                     <label style={{ fontSize: 15, fontWeight: 500, fontStyle: "italic" }}>Komentaras:</label>
                     <TextField multiline rows={5} value={isAddHistoryFormIsOpen.commentText} onChange={onCommentChange} />
+                    {isAddHistoryFormIsOpen.statusText === "Patvirtintas" ? (
+                        <>
+                            <label style={{ fontSize: 15, fontWeight: 500, fontStyle: "italic" }}>Kaina:</label>
+                            <TextField style={{ marginBottom: 20 }} value={isAddHistoryFormIsOpen.price} onChange={onPriceChange}/>
+                        </>    
+                    ) :null}
                     <Button style={{ width: 100, marginTop: 10 }} variant='contained' onClick={submitHistoryForm}>
                         Pridėti
                     </Button>
@@ -135,7 +149,7 @@ export default function Order() {
                     <TableBody>
                         {order?.orderHistories.map(orderHistory => (
                             <TableRow key={orderHistory.time}>
-                                <TableCell align="left">{orderHistory.time}</TableCell>
+                                <TableCell align="left">{handleDateDisplayWithHours(orderHistory.dateTime)}</TableCell>
                                 <TableCell align="left">{orderHistory.comment}</TableCell>
                                 <TableCell align="left">{orderHistory.status}</TableCell>
                             </TableRow>

@@ -15,7 +15,7 @@ export const getAllOrders = async () =>{
 export const getOneOrderById = async (id: any) => {
     var theData: IOrder = {address: "", dateTime: "", email: "", description: "", firstName: "", id: 0, name: "", orderHistories: [], phone: "", price: 0, status: "", workerId: 0, lastName: ""};
 
-    await Axios.get(`https://dapperaspnetcore20220424152102.azurewebsites.net/api/orders/name/${id}`)
+    await Axios.get(`https://dapperaspnetcore20220424152102.azurewebsites.net/api/orders/${id}/multipleresult`)
         .then((response: any) =>{
         console.log("response", response)
         theData = response.data;
@@ -24,7 +24,6 @@ export const getOneOrderById = async (id: any) => {
 }
 
 export const insertNewOrder = async (firstName: string, lastName: string, email: string, phone: string, address: string, description: string, selectedWorkerId: string) =>{
-    console.log("selectedWorkerId")
     await Axios.post(`https://dapperaspnetcore20220424152102.azurewebsites.net/api/orders`, {
         firstName: firstName,
         lastName: lastName,
@@ -34,4 +33,26 @@ export const insertNewOrder = async (firstName: string, lastName: string, email:
         description: description,
         workerId: parseInt(selectedWorkerId)
     });
+}
+
+export const insertHistoryInOrder = async (orderName: string, orderId: number, status: string, comment: string, price: string) =>{
+    if(price !== ""){
+        await Axios.post(`https://dapperaspnetcore20220424152102.azurewebsites.net/api/orders/history`, {
+            orderName: orderName,
+            orderId: orderId,
+            comment: comment,
+            status: status,
+            price: parseInt(price)
+        })
+
+    } else {
+        await Axios.post(`https://dapperaspnetcore20220424152102.azurewebsites.net/api/orders/history`, {
+            orderName: orderName,
+            orderId: orderId,
+            comment: comment,
+            status: status,
+            price: 0
+        });
+    }
+        
 }
