@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import PageContainer from '../Layout/PageContainer';
 import { Divider, Stack, Typography, Button, TextField, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Dialog, DialogTitle, DialogActions } from '@mui/material';
 import OrderImage from '../Images/OrderImage.png';
-import { getOneOrderById, insertHistoryInOrder } from '../Components/CustomerOrder/Controller/CustomerOrderController';
+import { deleteOrder, getOneOrderById, insertHistoryInOrder } from '../Components/CustomerOrder/Controller/CustomerOrderController';
 import { IOrder } from '../Components/CustomerOrder/Model/AllOrders';
 
 export default function Order() {
 
     const params = useParams();
+    const navigate = useNavigate();
     const [isAddHistoryFormIsOpen, setIsAddHistoryFormIsOpen] = useState({ status: false, commentText: "", statusText: "", price: "" });
     const [afterAPIChanged, setAfterAPIChanged] = useState(false);
     const [deleteDialog, setDeleteDialog] = useState(false)
@@ -51,6 +52,11 @@ export default function Order() {
         setDeleteDialog(false);
     }
 
+    const handleDeleteOrder = async () => {
+        await deleteOrder(order.name);
+        navigate(`/adminpanel`);
+    }
+    
     const handleDateDisplay = (dateTime: string) =>{
         return dateTime.slice(0, 10);
     }
@@ -170,7 +176,7 @@ export default function Order() {
                     </DialogTitle>
                     <DialogActions>
                         <Button onClick={handleDialogClose} color='error' variant='outlined'>Ne</Button>
-                        <Button onClick={handleDialogClose} autoFocus color='success' variant='contained'>Taip</Button>
+                        <Button onClick={handleDeleteOrder} autoFocus color='success' variant='contained'>Taip</Button>
                     </DialogActions>
                 </Dialog>
             ) : null}

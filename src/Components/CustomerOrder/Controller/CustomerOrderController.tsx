@@ -36,6 +36,7 @@ export const insertNewOrder = async (firstName: string, lastName: string, email:
 }
 
 export const insertHistoryInOrder = async (orderName: string, orderId: number, status: string, comment: string, price: string) =>{
+
     if(price !== ""){
         await Axios.post(`https://dapperaspnetcore20220424152102.azurewebsites.net/api/orders/history`, {
             orderName: orderName,
@@ -53,6 +54,9 @@ export const insertHistoryInOrder = async (orderName: string, orderId: number, s
             status: status,
             price: 0
         });
-    }
-        
+    }   
+}
+
+export const deleteOrder = async (id: any) =>{
+    await Axios.delete(`https://dapperaspnetcore20220424152102.azurewebsites.net/api/orders/${id}`);
 }
