@@ -2,31 +2,40 @@ import { Button, Container, Input, InputAdornment, InputLabel } from '@mui/mater
 import React, { useState } from 'react';
 import BorderColorIcon from '@material-ui/icons/BorderColor'
 import { useNavigate } from 'react-router-dom';
-import {allOrders} from '../../../../data/orders'
+import { getAllOrders } from '../../Controller/CustomerOrderController';
+import { IOrder } from '../../Model/AllOrders';
 
 export default function SearchOrderContainer(){
     const [searchInputText, setSearchInputText] = useState("");
     const [inputValidation, setInputValidation] = useState({isValide: true, text: ""});
     const navigate = useNavigate();
 
+
     const navigateToOrderPage = () => {
         navigate(`/order/${searchInputText}`);
     }
     
+    const getAllOrdersFromAPI = async () => {
+        return await getAllOrders();
+    }
+
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchInputText(e.target.value)
     } 
-    const isExist = () => {
-        var filterByName = allOrders.filter(item => searchInputText === item.name)
+    
+    const isExist = async () => {
+        var allOrders = await getAllOrdersFromAPI()
+        var filterByName = allOrders.filter((item: IOrder) => searchInputText === item.name)
         if(filterByName.length === 0){
             return false;
         }
         return true;
     }
-    const onSearchClick = () => {
+    const onSearchClick = async () => {
+        var isExisting = await isExist();
         if(searchInputText.length !== 6){
             setInputValidation({isValide: false, text: "Turi būti 6 simboliai"})
-        } else if(isExist() === false){
+        } else if(isExisting === false){
             setInputValidation({isValide: false, text: "Nėra tokio užsakymo"})
         } else {
             navigateToOrderPage()

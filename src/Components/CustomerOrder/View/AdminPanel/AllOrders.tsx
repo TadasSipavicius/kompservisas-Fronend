@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../../../Styling/Components/OrderRow.scss'
 import { getAllOrders } from '../../Controller/CustomerOrderController';
-import { IAllOrders } from '../../Model/AllOrders';
+import { IOrder } from '../../Model/AllOrders';
 export default function AllOrders(){
 
     const navigate = useNavigate();
-    const [allOrders, setAllOrders] = useState<IAllOrders[]>([]);
+    const [allOrders, setAllOrders] = useState<IOrder[]>([]);
 
     const onOrderClick = (item: string) => (e: any) =>{
         navigate(`/order/${item}`)

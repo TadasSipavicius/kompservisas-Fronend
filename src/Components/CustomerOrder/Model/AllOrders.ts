@@ -1,4 +1,4 @@
-export interface IAllOrders{
+export interface IOrder{
     address: string;
     dateTime: string;
     description: string;
