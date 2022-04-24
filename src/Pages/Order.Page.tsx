@@ -1,37 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import PageContainer from '../Layout/PageContainer';
-import { allOrders } from '../data/orders'
 import { Divider, Stack, Typography, Button, TextField, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Dialog, DialogTitle, DialogActions } from '@mui/material';
 import OrderImage from '../Images/OrderImage.png';
-
-interface IHistory {
-    time: string;
-    comment: string;
-    status: string;
-}
-
-interface IOrder {
-    id: number;
-    name: string;
-    status: string;
-    createdTime: string;
-    history: IHistory[];
-}
+import { getOneOrderById } from '../Components/CustomerOrder/Controller/CustomerOrderController';
+import { IOrder } from '../Components/CustomerOrder/Model/AllOrders';
 
 export default function Order() {
 
     const params = useParams();
     const [isAddHistoryFormIsOpen, setIsAddHistoryFormIsOpen] = useState({ status: false, commentText: "", statusText: "" });
     const [deleteDialog, setDeleteDialog] = useState(false)
-    const [order, setOrder] = useState<IOrder>()
+    const [order, setOrder] = useState<IOrder>({address: "", dateTime: "", email: "", description: "", firstName: "", id: 0, name: "", orderHistories: [], phone: "", price: 0, status: "", workerId: 0})
 
     useEffect(() => {
-        allOrders.forEach(item => {
-            if (item.name === params.id) {
-                setOrder(item)
-            }
-        })
+        const getOrder = async () => {
+            var theOrder = await getOneOrderById(params.id);
+            setOrder(theOrder);
+        }
+        getOrder();
     }, [params.id])
 
     const onDisplayHistoryForm = () => {
@@ -58,6 +45,11 @@ export default function Order() {
         setDeleteDialog(false);
     }
 
+    const handleDateDisplay = (dateTime: string ) =>{
+
+        return dateTime.slice(0, 10);
+    }
+
     const submitHistoryForm = () => {
         console.log("Status: ", isAddHistoryFormIsOpen.statusText);
         console.log("Comment: ", isAddHistoryFormIsOpen.commentText);
@@ -81,7 +73,7 @@ export default function Order() {
                     <Divider />
                     <Stack style={{ display: "flex", flexDirection: "row", marginTop: 50, marginBottom: 3 }}>
                         <Stack style={{ width: 150, fontWeight: 600 }}>Priėmimo data: </Stack>
-                        <Stack>{order?.createdTime}</Stack>
+                        <Stack>{handleDateDisplay(order.dateTime)}</Stack>
                     </Stack>
                     <Divider />
                 </Stack>
@@ -117,7 +109,7 @@ export default function Order() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {order?.history.map(orderHistory => (
+                        {order?.orderHistories.map(orderHistory => (
                             <TableRow key={orderHistory.time}>
                                 <TableCell align="left">{orderHistory.time}</TableCell>
                                 <TableCell align="left">{orderHistory.comment}</TableCell>
