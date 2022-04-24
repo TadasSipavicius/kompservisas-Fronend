@@ -11,7 +11,7 @@ export default function Order() {
     const params = useParams();
     const [isAddHistoryFormIsOpen, setIsAddHistoryFormIsOpen] = useState({ status: false, commentText: "", statusText: "" });
     const [deleteDialog, setDeleteDialog] = useState(false)
-    const [order, setOrder] = useState<IOrder>({address: "", dateTime: "", email: "", description: "", firstName: "", id: 0, name: "", orderHistories: [], phone: "", price: 0, status: "", workerId: 0})
+    const [order, setOrder] = useState<IOrder>({address: "", dateTime: "", email: "", description: "", firstName: "", id: 0, name: "", orderHistories: [], phone: "", price: 0, status: "", workerId: 0, lastName: ""})
 
     useEffect(() => {
         const getOrder = async () => {
@@ -21,7 +21,7 @@ export default function Order() {
         getOrder();
     }, [params.id])
 
-    
+
     const onDisplayHistoryForm = () => {
         setIsAddHistoryFormIsOpen({ status: !isAddHistoryFormIsOpen.status, statusText: "", commentText: "" });
     }
@@ -78,7 +78,30 @@ export default function Order() {
                     </Stack>
                     <Divider />
                 </Stack>
+                <Stack style={{ marginLeft: 55 }}>
+                    <Stack style={{ display: "flex", flexDirection: "row", marginTop: 30, marginBottom: 3 }}>
+                        <Stack style={{ width: 150, fontWeight: 600 }}>Vardas Pavardė: </Stack>
+                        <Stack>{order?.firstName + " " + order?.lastName}</Stack>
+                    </Stack>
+                    <Divider />
+                    <Stack style={{ display: "flex", flexDirection: "row", marginTop: 50, marginBottom: 3 }}>
+                        <Stack style={{ width: 150, fontWeight: 600 }}>Telefonas: </Stack>
+                        <Stack>{order?.phone}</Stack>
+                    </Stack>
+                    <Divider />
+                    <Stack style={{ display: "flex", flexDirection: "row", marginTop: 50, marginBottom: 3 }}>
+                        <Stack style={{ width: 150, fontWeight: 600 }}>Adresas: </Stack>
+                        <Stack>{handleDateDisplay(order?.address)}</Stack>
+                    </Stack>
+                    <Divider />
+                </Stack>
             </Stack>
+            {order.status === "Sutaisytas" ? (
+                <Stack style={{marginTop: 25, display: "flex", flexDirection: "row"}}>
+                    <Stack style={{fontWeight: 900}}>Užsakymo kaina:</Stack>
+                    <Stack style={{marginLeft: 20, fontWeight: 600, textDecoration: "underline"}}>522 eurų</Stack>
+                </Stack>
+            ) : null}
             <Typography style={{ borderBottom: "1px solid black", marginTop: 20 }}>Užsakymo istorija:</Typography>
             <Button style={{ marginTop: 10 }} variant='contained' onClick={onDisplayHistoryForm}>
                 Pakeisti Užsakymo istoriją:

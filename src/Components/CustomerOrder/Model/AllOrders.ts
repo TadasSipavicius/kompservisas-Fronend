@@ -4,6 +4,7 @@ export interface IOrder{
     description: string;
     email: string;
     firstName: string;
+    lastName: string;
     id: number;
     name: string;
     phone: string;

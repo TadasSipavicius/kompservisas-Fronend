@@ -13,7 +13,7 @@ export const getAllOrders = async () =>{
 }
 
 export const getOneOrderById = async (id: any) => {
-    var theData: IOrder = {address: "", dateTime: "", email: "", description: "", firstName: "", id: 0, name: "", orderHistories: [], phone: "", price: 0, status: "", workerId: 0};
+    var theData: IOrder = {address: "", dateTime: "", email: "", description: "", firstName: "", id: 0, name: "", orderHistories: [], phone: "", price: 0, status: "", workerId: 0, lastName: ""};
 
     await Axios.get(`https://dapperaspnetcore20220424152102.azurewebsites.net/api/orders/name/${id}`)
         .then((response: any) =>{
