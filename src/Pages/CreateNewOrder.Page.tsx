@@ -47,6 +47,10 @@ export default function CreateNewOrder() {
                             label="Telefono numeris"
                             sx={{ marginBottom: 3, maxWidth: 550 }}
                         />
+                        <TextField
+                            label="Adresas"
+                            sx={{ marginBottom: 3, maxWidth: 550 }}
+                        />
                     </Stack>
                     <Stack sx={{ marginTop: 3 }}>
                         <Typography>Informacija apie gedimą/problemą:</Typography>

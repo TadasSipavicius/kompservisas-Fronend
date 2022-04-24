@@ -1,21 +1,28 @@
 import { Box, Grid, Typography } from '@mui/material';
-import Axios from 'axios';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {allOrders} from '../../../../data/orders';
 import '../../../../Styling/Components/OrderRow.scss'
+import { getAllOrders } from '../../Controller/CustomerOrderController';
+import { IAllOrders } from '../../Model/AllOrders';
 export default function AllOrders(){
 
     const navigate = useNavigate();
+    const [allOrders, setAllOrders] = useState<IAllOrders[]>([]);
+
     const onOrderClick = (item: string) => (e: any) =>{
         navigate(`/order/${item}`)
     }
 
     useEffect(() =>{
-        Axios.get(`https://dapperaspnetcore20220424152102.azurewebsites.net/api/orders`).then((response: any) =>{
-            console.log(" REZAS", response);
-        });
+        const getTheAllUsers = async () =>{
+            setAllOrders(await getAllOrders());
+        }
+        getTheAllUsers();
     }, []);
+
+    const handleDateDisplay = (dateTime: string) =>{
+        return dateTime.slice(0, 10);
+    }
 
     return(
         <Box style={{marginTop: 15, marginBottom: 15}}>
@@ -25,7 +32,7 @@ export default function AllOrders(){
             {allOrders.map((item, index) => (
                 <Grid className='rowContainer' container onClick={onOrderClick(item.name)}>
                     <Grid item style={{minWidth: 80, paddingLeft: 5, fontWeight: 600}}>{item.name}</Grid>
-                    <Grid item style={{minWidth: 80, fontWeight: 600}}>{item.createdTime}</Grid>
+                    <Grid item style={{minWidth: 80, fontWeight: 600}}>{handleDateDisplay(item.dateTime)}</Grid>
                     <Grid item style={{minWidth: 100, fontWeight: 600}}>{item.status}</Grid>
                 </Grid>
             ))}
