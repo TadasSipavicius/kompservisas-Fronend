@@ -21,6 +21,7 @@ export default function Order() {
         getOrder();
     }, [params.id])
 
+    
     const onDisplayHistoryForm = () => {
         setIsAddHistoryFormIsOpen({ status: !isAddHistoryFormIsOpen.status, statusText: "", commentText: "" });
     }

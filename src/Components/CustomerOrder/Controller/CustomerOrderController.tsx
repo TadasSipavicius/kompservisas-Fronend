@@ -22,3 +22,16 @@ export const getOneOrderById = async (id: any) => {
     });
     return theData;
 }
+
+export const insertNewOrder = async (firstName: string, lastName: string, email: string, phone: string, address: string, description: string, selectedWorkerId: string) =>{
+    console.log("selectedWorkerId")
+    await Axios.post(`https://dapperaspnetcore20220424152102.azurewebsites.net/api/orders`, {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+        address: address,
+        description: description,
+        workerId: parseInt(selectedWorkerId)
+    });
+}

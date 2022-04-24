@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import PageContainer from '../Layout/PageContainer';
 import { availableWorkers } from '../data/availableWorkers';
 import { useNavigate } from 'react-router-dom';
+import { insertNewOrder } from '../Components/CustomerOrder/Controller/CustomerOrderController';
 
 interface IWorker {
     workerID: number;
@@ -12,13 +13,47 @@ interface IWorker {
 export default function CreateNewOrder() {
 
     const [selectedWorker, setSelectedWorker] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [address, setAddress] = useState('');
+    const [description, setDescription] = useState('');
+    //const [worker, setWorker] = useState(-1);
     const navigate = useNavigate();
 
+    const handleFirstNameChange = (event: any) => {
+        setFirstName(event.target.value);
+    };
+
+    const handleLastNameChange = (event: any) => {
+        setLastName(event.target.value );
+    };
+
+    const handleEmailChange = (event: any) => {
+        setEmail(event.target.value);
+    };
+
+    const handlePhoneChange = (event: any) => {
+        setPhone(event.target.value);
+    };
+
+    const handleAddressChange = (event: any) => {
+        setAddress(event.target.value);
+    };
+
+    const handleDescriptionChange = (event: any) => {
+        setDescription(event.target.value);
+    };
+
     const handleSelectChange = (event: SelectChangeEvent) => {
+        console.log("even", typeof(event.target.value))
         setSelectedWorker(event.target.value as string);
     };
 
-    const onSubmitFormClick = () => {
+
+    const onSubmitFormClick = async () => {
+        await insertNewOrder(firstName, lastName, email, phone, address, description, selectedWorker);
         navigate('/adminpanel')
     }
 
@@ -34,22 +69,32 @@ export default function CreateNewOrder() {
                         <TextField
                             label="Vardas"
                             sx={{ marginBottom: 3, maxWidth: 550 }}
+                            value={firstName}
+                            onChange={handleFirstNameChange}
                         />
                         <TextField
                             label="Pavardė"
                             sx={{ marginBottom: 3, maxWidth: 550 }}
+                            value={lastName}
+                            onChange={handleLastNameChange}
                         />
                         <TextField
                             label="E-mail'as"
                             sx={{ marginBottom: 3, maxWidth: 550 }}
+                            value={email}
+                            onChange={handleEmailChange}
                         />
                         <TextField
                             label="Telefono numeris"
                             sx={{ marginBottom: 3, maxWidth: 550 }}
+                            value={phone}
+                            onChange={handlePhoneChange}
                         />
                         <TextField
                             label="Adresas"
                             sx={{ marginBottom: 3, maxWidth: 550 }}
+                            value={address}
+                            onChange={handleAddressChange}
                         />
                     </Stack>
                     <Stack sx={{ marginTop: 3 }}>
@@ -59,6 +104,8 @@ export default function CreateNewOrder() {
                             label="Gedimo/Problemos aprašymas"
                             rows={7}
                             multiline
+                            value={description}
+                            onChange={handleDescriptionChange}
                         />
                     </Stack>
                     <Stack sx={{ marginTop: 3 }}>
