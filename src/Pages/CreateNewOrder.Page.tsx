@@ -1,14 +1,9 @@
 import { Button, Container, Divider, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PageContainer from '../Layout/PageContainer';
-import { availableWorkers } from '../data/availableWorkers';
 import { useNavigate } from 'react-router-dom';
-import { insertNewOrder } from '../Components/CustomerOrder/Controller/CustomerOrderController';
-
-interface IWorker {
-    workerID: number;
-    workerName: string;
-}
+import { getAvailableWorkers, insertNewOrder } from '../Components/CustomerOrder/Controller/CustomerOrderController';
+import { IWorker } from '../Components/CustomerOrder/Model/Worker';
 
 export default function CreateNewOrder() {
 
@@ -19,8 +14,15 @@ export default function CreateNewOrder() {
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
     const [description, setDescription] = useState('');
-    //const [worker, setWorker] = useState(-1);
+    const [workers, setWorkers] = useState<IWorker[]>([]);
     const navigate = useNavigate();
+
+    useEffect(()=>{
+        const getTheAllWorkers = async () =>{
+            setWorkers(await getAvailableWorkers());
+        }
+        getTheAllWorkers();
+    }, []);
 
     const handleFirstNameChange = (event: any) => {
         setFirstName(event.target.value);
@@ -120,8 +122,8 @@ export default function CreateNewOrder() {
                                 onChange={handleSelectChange}
                                 key='worker-select'
                             >
-                                {availableWorkers.map((worker: IWorker) => (
-                                    <MenuItem key={worker.workerID} value={worker.workerID}>{worker.workerName}</MenuItem>
+                                {workers.map((worker: IWorker) => (
+                                    <MenuItem key={worker.id} value={worker.id}>{worker.workerName}</MenuItem>
                                 ))}
                                 <MenuItem value={-1}>Nėra laisvo darbuotojo</MenuItem>
                             </Select>

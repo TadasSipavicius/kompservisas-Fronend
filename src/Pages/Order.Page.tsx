@@ -110,7 +110,7 @@ export default function Order() {
                     <Divider />
                 </Stack>
             </Stack>
-            {order.status === "Sutaisytas" ? (
+            {order.status === "Patvirtintas" ? (
                 <Stack style={{marginTop: 25, display: "flex", flexDirection: "row"}}>
                     <Stack style={{fontWeight: 900}}>Užsakymo kaina:</Stack>
                     <Stack style={{marginLeft: 20, fontWeight: 600, textDecoration: "underline"}}>522 eurų</Stack>
@@ -120,9 +120,11 @@ export default function Order() {
             <Button style={{ marginTop: 10 }} variant='contained' onClick={onDisplayHistoryForm}>
                 Pakeisti Užsakymo istoriją:
             </Button>
-            <Button style={{ marginTop: 10, marginLeft: 10 }} variant='contained' color='success' onClick={onDisplayConfirmedHistoryForm}>
-                Patvirtinti atliktą užsakymą
-            </Button>
+            {order.status !== "Patvirtintas" ? (
+                <Button style={{ marginTop: 10, marginLeft: 10 }} variant='contained' color='success' onClick={onDisplayConfirmedHistoryForm}>
+                    Patvirtinti atliktą užsakymą
+                </Button>
+            ) : null}
             {isAddHistoryFormIsOpen.status ? (
                 <Stack style={{ maxWidth: 400, border: "1px solid gray", padding: 20, marginTop: 10 }}>
                     <label style={{ fontSize: 15, fontWeight: 500, fontStyle: "italic" }}>Būsena:</label>
@@ -143,6 +145,12 @@ export default function Order() {
                     </Button>
                 </Stack>
             ) : null}
+
+            <Stack style={{marginTop: 25, marginBottom: 15}}>
+                <label style={{ fontSize: 17, fontWeight: 500, fontStyle: "italic" }}>Gedimo aprašymas:</label>
+                <Stack style={{marginTop: 5, maxWidth: 650, wordBreak: "break-all"}}>{order.description}</Stack>
+            </Stack>
+            
             <TableContainer >
                 <Table sx={{ maxWidth: 1000, marginTop: 3 }}>
                     <TableHead>

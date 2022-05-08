@@ -1,5 +1,6 @@
 import Axios from 'axios';
 import { IOrder } from '../Model/AllOrders';
+import { IWorker } from '../Model/Worker';
 
 export const getAllOrders = async () =>{
     var theData: IOrder[] = [];
@@ -24,6 +25,7 @@ export const getOneOrderById = async (id: any) => {
 }
 
 export const insertNewOrder = async (firstName: string, lastName: string, email: string, phone: string, address: string, description: string, selectedWorkerId: string) =>{
+    console.log("selectedWorkerId", selectedWorkerId);
     await Axios.post(`https://dapperaspnetcore20220424152102.azurewebsites.net/api/orders`, {
         firstName: firstName,
         lastName: lastName,
@@ -36,14 +38,14 @@ export const insertNewOrder = async (firstName: string, lastName: string, email:
 }
 
 export const insertHistoryInOrder = async (orderName: string, orderId: number, status: string, comment: string, price: string) =>{
-
+    console.log("price", parseFloat(price))
     if(price !== ""){
         await Axios.post(`https://dapperaspnetcore20220424152102.azurewebsites.net/api/orders/history`, {
             orderName: orderName,
             orderId: orderId,
             comment: comment,
             status: status,
-            price: parseInt(price)
+            price: parseFloat(price)
         })
 
     } else {
@@ -59,4 +61,15 @@ export const insertHistoryInOrder = async (orderName: string, orderId: number, s
 
 export const deleteOrder = async (id: any) =>{
     await Axios.delete(`https://dapperaspnetcore20220424152102.azurewebsites.net/api/orders/${id}`);
+}
+
+export const getAvailableWorkers = async () =>{
+    var workers: IWorker[] = [];
+    await Axios.get("https://dapperaspnetcore20220424152102.azurewebsites.net/api/workers/available")
+    .then((response: any) =>{
+        console.log("response", response)
+        workers = response.data;
+    });
+
+    return workers;
 }
