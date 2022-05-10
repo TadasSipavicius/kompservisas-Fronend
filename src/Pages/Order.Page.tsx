@@ -113,7 +113,7 @@ export default function Order() {
             {order.status === "Patvirtintas" ? (
                 <Stack style={{marginTop: 25, display: "flex", flexDirection: "row"}}>
                     <Stack style={{fontWeight: 900}}>Užsakymo kaina:</Stack>
-                    <Stack style={{marginLeft: 20, fontWeight: 600, textDecoration: "underline"}}>522 eurų</Stack>
+                    <Stack style={{marginLeft: 20, fontWeight: 600, textDecoration: "underline"}}>{order.price} eurų</Stack>
                 </Stack>
             ) : null}
             <Typography style={{ borderBottom: "1px solid black", marginTop: 20 }}>Užsakymo istorija:</Typography>
