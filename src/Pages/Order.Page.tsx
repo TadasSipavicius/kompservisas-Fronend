@@ -65,7 +65,7 @@ export default function Order() {
         return dateTime.slice(0, 10) + " " + dateTime.slice(11, 16);
     }
     const submitHistoryForm = async () => {
-        await insertHistoryInOrder(order.name, order.id, isAddHistoryFormIsOpen.statusText, isAddHistoryFormIsOpen.commentText, isAddHistoryFormIsOpen.price);
+        await insertHistoryInOrder(order.name, order.id, isAddHistoryFormIsOpen.statusText, isAddHistoryFormIsOpen.commentText, isAddHistoryFormIsOpen.price, order.workerId);
         setAfterAPIChanged(!afterAPIChanged);
         setIsAddHistoryFormIsOpen({ status: false, statusText: "", commentText: " ", price: "" })
     }

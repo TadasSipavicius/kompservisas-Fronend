@@ -37,7 +37,7 @@ export const insertNewOrder = async (firstName: string, lastName: string, email:
     });
 }
 
-export const insertHistoryInOrder = async (orderName: string, orderId: number, status: string, comment: string, price: string) =>{
+export const insertHistoryInOrder = async (orderName: string, orderId: number, status: string, comment: string, price: string, workerId: number) =>{
     console.log("price", parseFloat(price))
     if(price !== ""){
         await Axios.post(`https://dapperaspnetcore20220424152102.azurewebsites.net/api/orders/history`, {
@@ -45,7 +45,8 @@ export const insertHistoryInOrder = async (orderName: string, orderId: number, s
             orderId: orderId,
             comment: comment,
             status: status,
-            price: parseFloat(price)
+            price: parseFloat(price),
+            workerId: workerId
         })
 
     } else {
